@@ -13,7 +13,7 @@
 # limitations under the License.
 
 #Class to generate pseudo random pricing data for a security.
-import random
+import secrets
 
 class priceData():
     _instance = None
@@ -41,32 +41,32 @@ class priceData():
         if positiveOnly:
             #Check if we need seed position
             if len(self.__securityPriceData[securityName]) == 0:
-                self.__securityPriceData[securityName].append(random.choices(range(0, 10000))[0])
+                self.__securityPriceData[securityName].append(secrets.SystemRandom().choices(range(0, 10000))[0])
             else:
                 #Check if we hit a rally
                 if len(self.__securityPriceData[securityName]) > 2 and \
                     self.__securityPriceData[securityName][-1] - self.__securityPriceData[securityName][-2] > 0 and \
-                    random.uniform(0, 1) < 0.0005 and \
+                    secrets.SystemRandom().uniform(0, 1) < 0.0005 and \
                     securityName not in self.__securityRally:
                     self.__securityRally[securityName] = 10
 
                 if securityName in self.__securityRally:
-                    securityMove = self.__securityPriceData[securityName][-1] * random.uniform(0.05, 0.1)
+                    securityMove = self.__securityPriceData[securityName][-1] * secrets.SystemRandom().uniform(0.05, 0.1)
                     self.__securityRally[securityName] -= 1
                     if self.__securityRally[securityName] <= 0:
                         del self.__securityRally[securityName]
                     self.__securityPriceData[securityName].append(self.__securityPriceData[securityName][-1] + securityMove)
                 else:
                     #Generate a move positive or negative. With a percentage move
-                    securityMove = self.__securityPriceData[securityName][-1] * random.uniform(0.0001, 0.01)
+                    securityMove = self.__securityPriceData[securityName][-1] * secrets.SystemRandom().uniform(0.0001, 0.01)
                     
                 #Move security's price based on the generate market value    
-                if bool(random.getrandbits(1)):
+                if bool(secrets.SystemRandom().getrandbits(1)):
                     self.__securityPriceData[securityName].append(self.__securityPriceData[securityName][-1] + securityMove)
                 else:
                     self.__securityPriceData[securityName].append(self.__securityPriceData[securityName][-1] - securityMove)
         else:
-            self.__securityPriceData[securityName].append(random.choices(range(-2000, 10000))[0])
+            self.__securityPriceData[securityName].append(secrets.SystemRandom().choices(range(-2000, 10000))[0])
 
         return self.__securityPriceData[securityName][-1]
 
