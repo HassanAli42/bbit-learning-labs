@@ -13,7 +13,7 @@
 # limitations under the License.
 
 #Class to generate random position data
-import random
+import secrets
 
 class positionUpdates():
     def __init__(self) -> None:
@@ -33,11 +33,11 @@ class positionUpdates():
         while count < transactionSize:
             posUpdate = 0
             if count == 0:
-                posUpdate = random.randint(1, 1001)
+                posUpdate = secrets.SystemRandom().randint(1, 1001)
             else:
-                posUpdate = random.randint(-400, 1001)
+                posUpdate = secrets.SystemRandom().randint(-400, 1001)
                 while currentPositionCount + posUpdate < 0:
-                    posUpdate = random.randint(-400, 1001)
+                    posUpdate = secrets.SystemRandom().randint(-400, 1001)
 
             transactionList.append(posUpdate)
             currentPositionCount += posUpdate
